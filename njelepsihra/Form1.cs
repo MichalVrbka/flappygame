@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,15 +14,15 @@ namespace njelepsihra
     {
         private const int Gravity = 2;
         private const int JumpSpeed = -15;
-        private const int PipeSpeed = 5;
+        private const int PipeSpeed = 10;
 
         private bool isJumping;
         private int birdSpeed;
-        private int score;
+        private double score;
 
         private List<PictureBox> pipes;
         private PictureBox bird;
-        private Random random;
+        private Random random = new Random();
 
         public Form1()
         {
@@ -41,8 +41,6 @@ namespace njelepsihra
 
             SpawnBird();
             SpawnPipes();
-
-            random = new Random();
         }
 
 
@@ -56,7 +54,7 @@ namespace njelepsihra
         {
             bird = new PictureBox
             {
-                Size = new Size(50, 50),
+                Size = new Size(150, 150),
                 Location = new Point(50, 200),
                 Image = Image.FromFile("G:\\nejlepsihra\\njelepsihra\\njelepsihra\\bird.png"),
                 SizeMode = PictureBoxSizeMode.Zoom,
@@ -67,20 +65,21 @@ namespace njelepsihra
 
         private void SpawnPipes()
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 5; i++)
             {
+                int height = random.Next(-300, 0);
                 PictureBox pipeUpper = new PictureBox
                 {
-                    Size = new Size(100, 450),
-                    Location = new Point(1000 + i * 500, 0),
+                    Size = new Size(150, 675),
+                    Location = new Point(1000 + i * 500, height),
                     Image = Image.FromFile("G:\\nejlepsihra\\njelepsihra\\njelepsihra\\higherpipes.png"),
                     SizeMode = PictureBoxSizeMode.StretchImage
                 };
 
                 PictureBox pipeLower = new PictureBox
                 {
-                    Size = new Size(100, 450),
-                    Location = new Point(1000 + i * 500, 1000),
+                    Size = new Size(150, 675),
+                    Location = new Point(1000 + i * 500, height + 1100),
                     Image = Image.FromFile("G:\\nejlepsihra\\njelepsihra\\njelepsihra\\lowerpipes.png"),
                     SizeMode = PictureBoxSizeMode.StretchImage
                 };
@@ -119,23 +118,16 @@ namespace njelepsihra
                 if (pipe.Right < 0)
                 {
                     pipe.Left = ClientSize.Width;
-                    pipe.Top = GetRandomPipeHeight();
                     pipe.Tag = null;
                 }
             }
-        }
-
-        private int GetRandomPipeHeight()
-        {
-            return random.Next(150, 300);
         }
 
         private void CheckCollisions()
         {
             foreach (var pipe in pipes)
             {
-                if (bird.Bounds.IntersectsWith(pipe.Bounds))
-                    EndGame();
+                if (bird.Bounds.IntersectsWith(pipe.Bounds)) EndGame();
             }
         }
 
@@ -145,7 +137,7 @@ namespace njelepsihra
             {
                 if (pipe.Right < bird.Left && pipe.Tag == null)
                 {
-                    score++;
+                    score += 0.5;
                     pipe.Tag = "scored";
                 }
             }
@@ -155,10 +147,10 @@ namespace njelepsihra
 
         private void EndGame()
         {
-            timer1.Stop();
+            timer1.Stop();            
             MessageBox.Show($"Game Over! Your Score: {score}", "Game Over", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            InitializeGame();
             timer1.Start();
+            InitializeGame();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -171,8 +163,7 @@ namespace njelepsihra
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Space)
-                isJumping = true;
+            if (e.KeyCode == Keys.Space) isJumping = true;
         }
     }
 }
