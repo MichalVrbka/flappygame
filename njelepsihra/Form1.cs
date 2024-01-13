@@ -54,9 +54,9 @@ namespace njelepsihra
         {
             bird = new PictureBox
             {
-                Size = new Size(150, 150),
+                Size = new Size(125, 125),
                 Location = new Point(50, 200),
-                Image = Image.FromFile("G:\\nejlepsihra\\njelepsihra\\njelepsihra\\bird.png"),
+                Image = Image.FromFile("D:\\Projekty\\flappygame\\njelepsihra\\bird.png"),
                 SizeMode = PictureBoxSizeMode.Zoom,
                 Name = "bird"
             };
@@ -65,22 +65,22 @@ namespace njelepsihra
 
         private void SpawnPipes()
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 4 ; i++)
             {
-                int height = random.Next(-300, 0);
+                int height = random.Next(-100, 100);
                 PictureBox pipeUpper = new PictureBox
                 {
-                    Size = new Size(150, 675),
+                    Size = new Size(100, 400),
                     Location = new Point(1000 + i * 500, height),
-                    Image = Image.FromFile("G:\\nejlepsihra\\njelepsihra\\njelepsihra\\higherpipes.png"),
+                    Image = Image.FromFile("D:\\Projekty\\flappygame\\njelepsihra\\higherpipes.png"),
                     SizeMode = PictureBoxSizeMode.StretchImage
                 };
 
                 PictureBox pipeLower = new PictureBox
                 {
-                    Size = new Size(150, 675),
-                    Location = new Point(1000 + i * 500, height + 1100),
-                    Image = Image.FromFile("G:\\nejlepsihra\\njelepsihra\\njelepsihra\\lowerpipes.png"),
+                    Size = new Size(100, 400),
+                    Location = new Point(1000 + i * 500, height + 700),
+                    Image = Image.FromFile("D:\\Projekty\\flappygame\\njelepsihra\\lowerpipes.png"),
                     SizeMode = PictureBoxSizeMode.StretchImage
                 };
 
@@ -150,6 +150,7 @@ namespace njelepsihra
             timer1.Stop();            
             MessageBox.Show($"Game Over! Your Score: {score}", "Game Over", MessageBoxButtons.OK, MessageBoxIcon.Information);
             timer1.Start();
+            Close();
             InitializeGame();
         }
 
